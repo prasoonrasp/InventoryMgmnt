@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products</title>
+
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/angular-1.2.5.js"> </script>
+
+    <script src="Scripts/third-party/angular-sanitize.min.js"></script>
+    <script src="Scripts/third-party/angular-route-1.2.5.js"></script>
+    <script src="Scripts/third-party/angular-cookies-1.2.5.js"></script>
+    <script src="Scripts/third-party/angular-animate.js"></script>
+    <script src="Scripts/third-party/toastr.min.js"></script>
+    <script src="Scripts/third-party/jquery.dataTables.min.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/controllers/ProductController.js"></script>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/jquery.dataTables.min.css" rel="stylesheet" />
+    <style>
+        .mt-20
+        {
+            margin-top: 20px !important;
+        }
+
+        .modal-header
+        {
+            min-height: 45px !important;
+        }
+
+        #mydiv
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background-color: grey;
+            opacity: .8;
+        }
+
+        .ajax-loader
+        {
+            position: absolute;
+            left: 45%;
+            top: 50%;
+            margin-left: -32px; /* -1 * image width / 2 */
+            margin-top: -32px; /* -1 * image height / 2 */
+            display: block;
+            height:100px;
+        }
+        .wd-70{
+            width:70px!important;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('#UserTable').dataTable();
+        });
+    </script>
+</head>
+<body>
+    <form id="frm_products">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="navbar-brand">Inventory Demo</div>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="DashBord.html">DashBord</a></li>
+                        <li><a href="Products.html">Products</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <center>
+            <div ng-app="app" ng-controller="Productcontroller" style="width:60%;">
+                <div class="mt-20 pull-right" style="margin-bottom:20px;">
+                    <input type="button" id="btn_Insert_show" class="btn btn-primary" data-toggle="modal" data-target="#div_Insert" value="insert Product" />
+                </div>
+                <div style="margin-top:20px;margin-bottom:20px;">
+                    <table id="UserTable" class="UserTable table table-striped mt-20">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Product Name
+                            </th>
+                            <th>
+                                Stock
+                            </th>
+                            <th class="wd-70">
+                            </th>
+                            <th class="wd-70">
+                            </th>
+                        </tr>
+                        <tr ng-repeat="a in Product.Tbl_data">
+                            <td>{{a.Id}}</td>
+                            <td>{{a.ProductName}}</td>
+                            <td>{{a.Stock}}</td>
+                            <td class="wd-70">
+                                <input type="button" id="btn_view" ng-click="Product.Methods.GetData(a.Id);" class="btn btn-primary" data-toggle="modal" data-target="#div_view" value="View" />
+                            </td>
+                            <td class="wd-70">
+                                <input type="button" id="btn_edit" ng-click="Product.Methods.EditData(a.Id);" class="btn btn-primary" data-toggle="modal" data-target="#div_update" value="Edit" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
+                <div id="mydiv">
+                    <img src="images/loading.gif" class="ajax-loader" />
+                </div>
+
+                <div class="modal fade" id="div_view" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title pull-left">View Data</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table class="UserTable table table-striped">
+                                    <tr>
+                                        <td>Product Name</td>
+                                        <td>{{Product.ViewData.ProductName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Category</td>
+                                        <td>{{Product.ViewData.Category}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Description</td>
+                                        <td>{{Product.ViewData.Description}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stock</td>
+                                        <td>{{Product.ViewData.Stock}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="modal fade" id="div_update" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title pull-left">Edit Data</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table class="UserTable table table-striped">
+                                    <input type="hidden" id="P_Id" ng-model="Product.Edit_Data.Id" />
+                                    <tr>
+                                        <td>Product Name</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="txt_Productname" ng-model="Product.Edit_Data.Productname" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Category</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="txt_Category" ng-model="Product.Edit_Data.Category" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Description</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="txt_Description" ng-model="Product.Edit_Data.Description" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stock</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="txt_Stock" ng-model="Product.Edit_Data.Stock" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" id="btn_update" data-dismiss="modal" class="btn btn-success" ng-click="Product.Methods.UpdateData(Product.Edit_Data.Id);" value="Update" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="modal fade" id="div_Insert" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title pull-left">Insert Data</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table class="UserTable table table-striped">
+                                    <tr>
+                                        <td>Product Name</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Productname" ng-model="Product.Insert_Data.Productname" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Category</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Category" ng-model="Product.Insert_Data.Category" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Description</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Description" ng-model="Product.Insert_Data.Description" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stock</td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Stock" ng-model="Product.Insert_Data.Stock" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" id="btn_Insert" class="btn btn-success" data-dismiss="modal" ng-click="Product.Methods.InsertData();" value="Insert" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </center>
+    </form>
+</body>
+</html>

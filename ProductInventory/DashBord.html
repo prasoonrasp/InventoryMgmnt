@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DashBord</title>
+
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/angular-1.2.5.js"> </script>
+
+    <script src="Scripts/third-party/angular-sanitize.min.js"></script>
+    <script src="Scripts/third-party/angular-route-1.2.5.js"></script>
+    <script src="Scripts/third-party/angular-cookies-1.2.5.js"></script>
+    <script src="Scripts/third-party/angular-animate.js"></script>
+    <script src="Scripts/third-party/toastr.min.js"></script>
+    <script src="Scripts/third-party/jquery.dataTables.min.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/controllers/ProductController.js"></script>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        #mydiv {  
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1000;
+    background-color:grey;
+    opacity: .8;
+ }
+
+.ajax-loader {
+    position: absolute;
+    left: 48%;
+    top: 50%;
+    margin-left: -32px; /* -1 * image width / 2 */
+    margin-top: -32px;  /* -1 * image height / 2 */
+    display: block; 
+       height:100px;    
+}
+    </style>
+</head>
+<body>
+    <form id="frm_DashBord">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="navbar-brand">Inventory Demo</div>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="DashBord.html">DashBord</a></li>
+                        <li><a href="Products.html">Products</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <center>
+            <div ng-app="app" ng-controller="Productcontroller" style="width:60%;">
+                <div class="jumbotron">
+                    <div>Inventory Counts</div>
+                    <div>{{Product.InventoryCount}}</div>
+                </div>
+            </div>
+        </center>
+    </form>
+    <div id="mydiv">
+        <img src="images/loading.gif" class="ajax-loader" />
+    </div>
+</body>
+</html>
